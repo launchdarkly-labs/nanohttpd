@@ -27,7 +27,6 @@ jobs:
       - image: cimg/openjdk:8.0
     steps:
       - checkout
-      - run: cp gradle.properties.example gradle.properties
       - run: java -version
       - run: ./gradlew jar
       - persist_to_workspace:
