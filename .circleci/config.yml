@@ -30,9 +30,40 @@ jobs:
       - run: java -version
       - run: ./gradlew jar
       - persist_to_workspace:
-          root: build
+          root: core
           paths:
-            - classes
+            - bin
+            - build
+      - persist_to_workspace:
+          root: fileupload
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: markdown-plugin
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: nanolets
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: samples
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: webserver
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: websockets
+          paths:
+            - bin
+            - build
 
   test-linux:
     parameters:
@@ -46,7 +77,19 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: build
+          at: core
+      - attach_workspace:
+          at: fileupload
+      - attach_workspace:
+          at: markdown-plugin
+      - attach_workspace:
+          at: nanolets
+      - attach_workspace:
+          at: samples
+      - attach_workspace:
+          at: webserver
+      - attach_workspace:
+          at: websockets
       - run: java -version
       - run: ./gradlew test
       - run:
