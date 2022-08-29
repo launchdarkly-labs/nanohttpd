@@ -1,0 +1,15 @@
+version: 2.1
+
+workflows:
+  test:
+    jobs:
+      - build-linux
+
+jobs:
+  build-linux:
+    docker:
+      - image: cimg/openjdk:8.0
+    steps:
+      - checkout
+      - run: java -version
+      # TODO: add actual build steps
