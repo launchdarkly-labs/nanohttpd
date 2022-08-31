@@ -101,6 +101,10 @@ public final class Method {
         return true;
     }
     
+    public String name() { // for backward compatibility with code that treated this as an enum
+        return name;
+    }
+    
     @Override
     public String toString() {
       return name;
