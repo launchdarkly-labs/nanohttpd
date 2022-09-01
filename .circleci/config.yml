@@ -4,6 +4,22 @@ workflows:
   test:
     jobs:
       - build-linux
+      - test-linux:
+          name: Java 8 - Linux - OpenJDK
+          docker-image: cimg/openjdk:8.0
+          requires:
+            - build-linux
+      - test-linux:
+          name: Java 11 - Linux - OpenJDK
+          docker-image: cimg/openjdk:11.0
+          requires:
+            - build-linux
+      - test-linux:
+          name: Java 17 - Linux - OpenJDK
+          docker-image: cimg/openjdk:17.0
+          with-coverage: true
+          requires:
+            - build-linux
 
 jobs:
   build-linux:
@@ -12,4 +28,77 @@ jobs:
     steps:
       - checkout
       - run: java -version
-      # TODO: add actual build steps
+      - run: ./gradlew jar
+      - persist_to_workspace:
+          root: core
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: fileupload
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: markdown-plugin
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: nanolets
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: samples
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: webserver
+          paths:
+            - bin
+            - build
+      - persist_to_workspace:
+          root: websockets
+          paths:
+            - bin
+            - build
+
+  test-linux:
+    parameters:
+      docker-image:
+        type: string
+      with-coverage:
+        type: boolean
+        default: false
+    docker:
+      - image: <<parameters.docker-image>>
+    steps:
+      - checkout
+      - attach_workspace:
+          at: core
+      - attach_workspace:
+          at: fileupload
+      - attach_workspace:
+          at: markdown-plugin
+      - attach_workspace:
+          at: nanolets
+      - attach_workspace:
+          at: samples
+      - attach_workspace:
+          at: webserver
+      - attach_workspace:
+          at: websockets
+      - run: java -version
+      - run: ./gradlew test
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
