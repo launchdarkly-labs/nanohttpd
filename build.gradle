@@ -12,11 +12,19 @@ plugins {
     id "java"
     id "java-library"
     id "maven-publish"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 allprojects {
 	group = 'com.launchdarkly.labs'
 	version = "${version}"
+}
+
+nexusPublishing {
+    packageGroup = "com.launchdarkly.labs"
+    repositories {
+        sonatype()
+    }
 }
 
 subprojects {
@@ -39,13 +47,11 @@ subprojects {
 
     publishing {
         publications {
-            mavenJava(MavenPublication) {
+            "$project.name"(MavenPublication) {
                 from components.java
+
+                artifactId = project.name
             }
-        }
-        
-        repositories {
-            mavenLocal()
         }
     }
 }
