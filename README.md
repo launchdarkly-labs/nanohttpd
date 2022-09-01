@@ -1,4 +1,7 @@
-## NanoHTTPD – a tiny web server in Java (LaunchDarkly fork)
+# NanoHTTPD – a tiny web server in Java (LaunchDarkly fork)
+
+[![Circle CI](https://circleci.com/gh/launchdarkly-labs/nanohttpd.svg?style=shield)](https://circleci.com/gh/launchdarkly-labs/nanohttpd)
+[![Javadocs](http://javadoc.io/badge/com.launchdarkly.labs/nanohttpd.svg)](http://javadoc.io/doc/com.launchdarkly.labs/nanohttpd)
 
 *NanoHTTPD* is a light-weight HTTP server designed for embedding in other applications, released under a Modified BSD licence.
 

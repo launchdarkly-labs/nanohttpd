@@ -53,6 +53,7 @@ import java.util.regex.Pattern;
 
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
+import org.nanohttpd.protocols.http.request.Method;
 import org.nanohttpd.protocols.http.response.IStatus;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.protocols.http.response.Status;
@@ -380,17 +381,17 @@ public class RouterNanoHTTPD extends NanoHTTPD {
                     Object object = handler.newInstance();
                     if (object instanceof UriResponder) {
                         UriResponder responder = (UriResponder) object;
-                        switch (session.getMethod()) {
-                            case GET:
-                                return responder.get(this, urlParams, session);
-                            case POST:
-                                return responder.post(this, urlParams, session);
-                            case PUT:
-                                return responder.put(this, urlParams, session);
-                            case DELETE:
-                                return responder.delete(this, urlParams, session);
-                            default:
-                                return responder.other(session.getMethod().toString(), this, urlParams, session);
+                        Method method = session.getMethod();
+                        if (method == Method.GET) {
+                            return responder.get(this, urlParams, session);
+                        } else if (method == Method.POST) {
+                            return responder.post(this, urlParams, session);
+                        } else if (method == Method.PUT) {
+                            return responder.put(this, urlParams, session);
+                        } else if (method == Method.DELETE) {
+                            return responder.delete(this, urlParams, session);
+                        } else {
+                            return responder.other(method.toString(), this, urlParams, session);
                         }
                     } else {
                         return Response.newFixedLengthResponse(Status.OK, "text/plain", //

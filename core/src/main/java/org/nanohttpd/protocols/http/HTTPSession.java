@@ -400,7 +400,7 @@ public class HTTPSession implements IHTTPSession {
 
             this.method = Method.lookup(pre.get("method"));
             if (this.method == null) {
-                throw new ResponseException(Status.BAD_REQUEST, "BAD REQUEST: Syntax error. HTTP verb " + pre.get("method") + " unhandled.");
+                throw new ResponseException(Status.BAD_REQUEST, "BAD REQUEST: Syntax error. HTTP verb " + pre.get("method") + " not allowed");
             }
 
             this.uri = pre.get("uri");

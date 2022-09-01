@@ -51,7 +51,7 @@ public class BadRequestTest extends HttpServerTest {
 
     @Test
     public void testInvalidMethod() throws IOException {
-        ByteArrayOutputStream outputStream = invokeServer("GETT http://example.com");
+        ByteArrayOutputStream outputStream = invokeServer("G(E)T http://example.com");
         String[] expected = new String[]{
             "HTTP/1.1 400 Bad Request"
         };
